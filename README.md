@@ -8,7 +8,7 @@ and feedbacks are stored in the MongoDB repository. Generated application logs a
 ## Run
 
 - Clone the repository
-- navigate to cloned feedback-application folder
+- navigate to cloned feedback-collection-application folder
 - execute ./feedback-collector/docker-based-build.sh to build feedback collector backend service
 - run docker-compose up. You can access feedback-collector-ui from http://localhost:3000/
 - You can access mongo-express from http://localhost:8081/ via a web browser.
