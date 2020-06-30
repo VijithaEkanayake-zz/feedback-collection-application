@@ -16,7 +16,6 @@ and feedbacks are stored in the MongoDB repository. Generated application logs a
 
 ## Testing
 
-- Navigate to feedback-collector-ui and Run `npm test` to execute the unit tests
 - Navigate to feedback-collector and  Run `./gradlew test` 
 
 ## Environment
