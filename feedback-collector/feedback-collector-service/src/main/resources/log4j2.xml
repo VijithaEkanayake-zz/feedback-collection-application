@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="debug">
+
+    <Properties>
+        <Property name="log-path">/usr/app/logs</Property>
+        <Property name="log-pattern">%d{yyyy-MM-dd HH:mm:ss,SSS}|%p|%c{1}|%X{reference_id}|%m%n</Property>
+        <Property name="log-rotate-pattern">%d{yyyy-MM-dd-HH:mm}.log</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="debug" fileName="${log-path}/debug.log"
+                     filePattern="${log-path}/debug-${log-rotate-pattern}">
+            <PatternLayout pattern="${log-pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="30" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="error" fileName="${log-path}/error.log"
+                     filePattern="${log-path}/error-${log-rotate-pattern}">
+            <PatternLayout pattern="${log-pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="30" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="info" fileName="${log-path}/info.log"
+                     filePattern="${log-path}/info-${log-rotate-pattern}">
+            <PatternLayout pattern="${log-pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="30" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="trace" fileName="${log-path}/trace.log"
+                     filePattern="${log-path}/trace-${log-rotate-pattern}">
+            <PatternLayout pattern="${log-pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="30" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${log-pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="30" modulate="true"/>
+            </Policies>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.vijitha" additivity="false" level="debug">
+            <appender-ref ref="debug" level="debug"/>
+            <appender-ref ref="info" level="info"/>
+            <appender-ref ref="console" level="info"/>
+            <appender-ref ref="console" level="error"/>
+            <appender-ref ref="error" level="error"/>
+        </Logger>
+        <Logger name="org.springframework" additivity="false" level="error">
+            <appender-ref ref="debug" level="debug"/>
+            <appender-ref ref="error" level="error"/>
+            <appender-ref ref="console" level="debug"/>
+            <appender-ref ref="console" level="error"/>
+        </Logger>
+
+        <Logger name="io.opentracing" additivity="false" level="trace">
+            <appender-ref ref="debug" level="debug"/>
+            <appender-ref ref="error" level="error"/>
+            <appender-ref ref="console" level="debug"/>
+            <appender-ref ref="console" level="error"/>
+            <appender-ref ref="trace" level="trace"/>
+        </Logger>
+
+        <Root level="warn">
+            <appender-ref ref="debug" level="debug"/>
+            <appender-ref ref="info" level="info"/>
+            <appender-ref ref="error" level="error"/>
+            <appender-ref ref="console" level="debug"/>
+            <appender-ref ref="console" level="info"/>
+            <appender-ref ref="console" level="error"/>
+        </Root>
+    </Loggers>
+</Configuration>

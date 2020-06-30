@@ -1,0 +1,49 @@
+def buildImpactVar = System.env.BUILD_IMPACT
+def buildImpact = buildImpactVar != null && buildImpactVar != "" ? buildImpactVar.trim() : "patch"
+
+task generateNewVersion {
+    doLast {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('build.properties').newDataInputStream())
+
+        def currentBuildVersion = properties.getProperty('current.version')
+        println "Current build version is ${currentBuildVersion}"
+
+        def currentBuildVersionParts = currentBuildVersion.split("\\.")
+        println "${currentBuildVersionParts}"
+
+        def majorVersion = currentBuildVersionParts[0]
+        def minorVersion = currentBuildVersionParts[1]
+        def patchVersion = currentBuildVersionParts[2]
+
+        println "Buidling for ${buildImpact}"
+
+        if (buildImpact == "major") {
+            majorVersion = majorVersion.toInteger() + 1;
+            minorVersion = 0;
+            patchVersion = 0;
+        } else if (buildImpact == "minor") {
+            minorVersion = minorVersion.toInteger() + 1;
+            patchVersion = 0;
+        } else {
+            patchVersion = patchVersion.toInteger() + 1;
+        }
+
+        def newBuildVersion = majorVersion + "." + minorVersion + "." + patchVersion
+
+        println "New build version is ${newBuildVersion}"
+
+        ant.propertyfile(file: "build.properties") {
+            entry(key: "current.version", value: newBuildVersion)
+        }
+    }
+}
+
+task generateTagVersion {
+    doLast {
+        ant.propertyfile(file: "build.properties") {
+            println "Publishing TAG version >> ${System.getenv("BITBUCKET_TAG")}"
+            entry(key: "current.version", value: System.getenv("BITBUCKET_TAG"))
+        }
+    }
+}

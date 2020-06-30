@@ -1,0 +1,96 @@
+group "com.vijitha.feedback.collector"
+version rootProject.version
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+configurations {
+    compile.exclude group: "org.apache.logging.log4j", module: "log4j-to-slf4j"
+    compile.exclude group: "ch.qos.logback", module: "logback-classic"
+    runtime.exclude group: "org.apache.logging.log4j", module: "log4j-to-slf4j"
+    runtime.exclude group: "ch.qos.logback", module: "logback-classic"
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.8.7"
+    implementation 'com.jlefebure:spring-boot-starter-minio:1.1'
+    compile group: 'io.springfox', name: 'springfox-core', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.3.1.RELEASE'
+    compile group: 'com.lmax', name: 'disruptor', version: '3.2.0'
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.8.7"
+    compile 'org.springframework.boot:spring-boot-configuration-processor'
+    compile 'org.springframework.boot:spring-boot-starter-webflux'
+    compile 'com.fasterxml.jackson.module:jackson-modules-java8:2.9.8'
+
+    testCompile "com.github.tomakehurst:wiremock:1.58"
+    testCompile 'io.projectreactor:reactor-test'
+    testImplementation "com.github.tomakehurst:wiremock:1.58"
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+
+}
+
+/* Tasks */
+
+def dockerRegistry = System.getenv("DOCKER_REGISTRY") ? System.getenv("DOCKER_REGISTRY") : 'vijithaekanayake' // default
+def dockerProjectKey = System.getenv("DOCKER_PROJECT_KEY") ? System.getenv("DOCKER_PROJECT_KEY") : 'feedback-collector' // default
+def dockerTag = System.getenv("DOCKER_TAG") ? System.getenv("DOCKER_TAG") : 'latest' // default
+
+// Default image name should looks like asia.gcr.io/nextgen-devenv/{project.name}:latest
+def dockerImageName = "${dockerRegistry}/${dockerProjectKey}:${dockerTag}"
+
+task buildImage(type: Exec) {
+    println dockerImageName
+    dependsOn "build"
+    workingDir "."
+    commandLine "docker", "build", ".", "-t", dockerImageName
+    standardOutput = new ByteArrayOutputStream()
+}
+
+task pushImage(type: Exec) {
+    dependsOn "buildImage"
+    workingDir "."
+    commandLine "docker", "push", dockerImageName
+    standardOutput = new ByteArrayOutputStream()
+}
+
+
+test {
+    jacoco {
+    }
+}
+
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(
+                    dir: "${project.buildDir}/classes/java/main",
+                    exclude: [
+                            "**/model/**/*",
+                            "**/conf/*",
+                            '**/validation/exception/*',
+                            '**/validation/handler/*',
+                    ]
+            )
+        }))
+    }
+}
+
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            element = 'CLASS'
+            excludes = [
+            ]
+            limit {
+                minimum = 0.0
+            }
+        }
+    }
+}
