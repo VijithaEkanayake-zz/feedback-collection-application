@@ -3,7 +3,7 @@
 .gradle
 build
 test
-Data
+node_modules
 
 .idea/
 **/*.iml
