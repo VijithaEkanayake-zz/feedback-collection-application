@@ -1,4 +1,4 @@
-group = 'com.vijitha.domain.model.feedback'
+group = 'com.mybudget.domain.model.sales'
 
 ext.libraries = [
         jacksonVersion: "2.8.7",
@@ -8,14 +8,14 @@ ext.libraries = [
 
 apply plugin: 'maven-publish'
 
-// My Repo
-def myRepo = System.getenv("CLOUDREPO_URL") ? System.getenv("CLOUDREPO_URL") : "https://vijitha.mycloudrepo.io/repositories" // default
+// MyBudget Repo
+def myBudgetRepo = System.getenv("CLOUDREPO_URL") ? System.getenv("CLOUDREPO_URL") : "https://mybudget.mycloudrepo.io/repositories" // default
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId "com.vijitha.domain"
-            artifactId "feedback"
+            groupId "com.mybudget.domain"
+            artifactId "sales"
             version rootProject.version
 
             from components.java
@@ -24,7 +24,7 @@ publishing {
     repositories {
         mavenLocal()
         maven {
-            url myRepo
+            url myBudgetRepo
             credentials { // adm user for publishing library
                 username System.getenv("CLOUDREPO_USERNAME")
                 password System.getenv("CLOUDREPO_PASSPHRASE")

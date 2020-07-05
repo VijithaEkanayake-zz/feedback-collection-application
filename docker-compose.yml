@@ -24,7 +24,25 @@ services:
     depends_on:
       - mongo
       - minio
-      - createbuckets
+    environment:
+      - "FEEDBACK_APPLICATION_LOG_LEVEL=INFO"
+    links:
+      - fluentd-s3
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: feedbacks
+
+  fluentd-s3:
+    container_name: fluentd-s3
+    image: govtechsg/fluentd-s3:fluentd-1.3.2_fluent-plugin-s3-latest
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+    ports:
+      - "24224:24224"
+    depends_on:
+      - minio
 
   mongo:
     image: mongo:latest
@@ -61,18 +79,3 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
-
-  createbuckets:
-    image: minio/mc
-    depends_on:
-      - minio
-    entrypoint: >
-      /bin/sh -c "
-      /usr/bin/mc config host add myminio https://minio:9000 minio minio123;
-      /usr/bin/mc rm -r --force myminio/feedback;
-      /usr/bin/mc mb myminio/feedback;
-      /usr/bin/mc policy set public myminio/feedback;
-      exit 0;"
-
-volumes:
-  data1:

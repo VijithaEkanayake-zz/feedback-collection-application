@@ -13,6 +13,7 @@ subprojects {
     buildscript {
         repositories {
             mavenCentral()
+            maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
             mavenLocal()
         }
     }
@@ -20,6 +21,7 @@ subprojects {
     repositories {
         mavenCentral()
         maven { url 'https://repo.spring.io/libs-snapshot' }
+        maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
         mavenLocal()
     }
 
@@ -64,11 +66,9 @@ configure(subprojects.findAll { it.name == 'feedback-collector-service' }) {
     dependencies {
         compile project(':feedback-collector-domain')
         compile 'org.springframework.boot:spring-boot-starter-webflux'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testCompile group: 'org.testng', name: 'testng', version: '6.14.3'
         testCompile "org.testng:testng:${libraries.testngVersion}"
-
     }
 
     apply plugin: 'jacoco'

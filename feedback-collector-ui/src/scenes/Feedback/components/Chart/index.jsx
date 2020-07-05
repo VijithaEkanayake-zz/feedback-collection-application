@@ -18,7 +18,7 @@ class ChartContainer extends Component {
 					{
 						title: false,
 						credits: false,
-						colors: ['#703030', '#2F343B', '#7E827A', '#E3CDA4', '#C77966'],
+						colors: ['#25AE37', '#88D44A', '#FFAF38', '#FB6837', '#EB2327'],
 						chart: {
 							type: 'pie',
 							backgroundColor: 'transparent'

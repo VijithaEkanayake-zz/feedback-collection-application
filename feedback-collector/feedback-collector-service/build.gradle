@@ -16,16 +16,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.8.7"
-    implementation 'com.jlefebure:spring-boot-starter-minio:1.1'
-    compile group: 'io.springfox', name: 'springfox-core', version: '2.9.2'
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    implementation "io.springfox:springfox-boot-starter:3.0.0-SNAPSHOT"
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.3.1.RELEASE'
     compile group: 'com.lmax', name: 'disruptor', version: '3.2.0'
     compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.8.7"
     compile 'org.springframework.boot:spring-boot-configuration-processor'
     compile 'org.springframework.boot:spring-boot-starter-webflux'
     compile 'com.fasterxml.jackson.module:jackson-modules-java8:2.9.8'
+    compile 'io.minio:minio:7.1.0'
 
     testCompile "com.github.tomakehurst:wiremock:1.58"
     testCompile 'io.projectreactor:reactor-test'
