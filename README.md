@@ -48,8 +48,9 @@ Tested on the following environment:
 
 
 ## Todo
+- Provide Admin Portal to control application configurations (Log levels)
 - Improve build process
 - Improve Error handling
 - Improve data collector (fluentd) and logging formats
 - Improve Test cases
-- Implement CICD pipeline
+- Implement CI/CD pipeline
