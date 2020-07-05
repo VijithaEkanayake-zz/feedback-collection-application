@@ -54,3 +54,4 @@ Tested on the following environment:
 - Improve data collector (fluentd) and logging formats
 - Improve Test cases
 - Implement CI/CD pipeline
+- Update outdated react packages
