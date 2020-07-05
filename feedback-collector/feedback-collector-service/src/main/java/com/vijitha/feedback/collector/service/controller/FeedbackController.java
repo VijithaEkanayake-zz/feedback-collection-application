@@ -43,7 +43,6 @@ public class FeedbackController {
         }
         LOGGER.info("Request received to create a feedback for the user [{}] and feedback id [{}]", dto.getName(), dto.getId());
         Mono<Feedback> feedback = feedbackService.addFeedback(dto);
-        minioPublisherService.publishLogs();
         return createFeedbackResponse(feedback);
     }
 
@@ -55,7 +54,7 @@ public class FeedbackController {
     }
 
     private Mono<FeedbackResponse> createFeedbackResponse(Mono<Feedback> feedback) {
-        return Mono.just(FeedbackResponse.builder().entityId(feedback.block().getId()).build());
+         return feedback.map(feedback1 -> FeedbackResponse.builder().entityId(feedback1.getId()).build());
     }
 
 }

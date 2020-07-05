@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Configuration status="debug">
+<Configuration status="${env:FEEDBACK_APPLICATION_LOG_LEVEL:-INFO}">
 
     <Properties>
         <Property name="log-path">/usr/app/logs</Property>
-        <Property name="log-pattern">%d{yyyy-MM-dd HH:mm:ss,SSS}|%p|%c{1}|%X{reference_id}|%m%n</Property>
+        <Property name="log-pattern">%d{yyyy-MM-dd HH:mm:ss,SSS}|%p|%c{3}|%X{reference_id}|%m%n</Property>
         <Property name="log-rotate-pattern">%d{yyyy-MM-dd-HH:mm}.log</Property>
     </Properties>
 
@@ -49,34 +49,30 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="com.vijitha" additivity="false" level="debug">
+        <Logger name="com.vijitha.feedback.collector.service" additivity="false" level="${env:FEEDBACK_APPLICATION_LOG_LEVEL:-INFO}">
             <appender-ref ref="debug" level="debug"/>
             <appender-ref ref="info" level="info"/>
             <appender-ref ref="console" level="info"/>
+            <appender-ref ref="console" level="debug"/>
+            <appender-ref ref="console" level="trace"/>
             <appender-ref ref="console" level="error"/>
             <appender-ref ref="error" level="error"/>
         </Logger>
-        <Logger name="org.springframework" additivity="false" level="error">
+        <Logger name="org.springframework" additivity="false" level="${env:FEEDBACK_APPLICATION_LOG_LEVEL:-INFO}">
             <appender-ref ref="debug" level="debug"/>
             <appender-ref ref="error" level="error"/>
             <appender-ref ref="console" level="debug"/>
+            <appender-ref ref="console" level="trace"/>
             <appender-ref ref="console" level="error"/>
         </Logger>
 
-        <Logger name="io.opentracing" additivity="false" level="trace">
-            <appender-ref ref="debug" level="debug"/>
-            <appender-ref ref="error" level="error"/>
-            <appender-ref ref="console" level="debug"/>
-            <appender-ref ref="console" level="error"/>
-            <appender-ref ref="trace" level="trace"/>
-        </Logger>
-
-        <Root level="warn">
+        <Root level="${env:FEEDBACK_APPLICATION_LOG_LEVEL:-INFO}">
             <appender-ref ref="debug" level="debug"/>
             <appender-ref ref="info" level="info"/>
             <appender-ref ref="error" level="error"/>
             <appender-ref ref="console" level="debug"/>
             <appender-ref ref="console" level="info"/>
+            <appender-ref ref="console" level="trace"/>
             <appender-ref ref="console" level="error"/>
         </Root>
     </Loggers>

@@ -3,6 +3,7 @@ package com.vijitha.feedback.collector.service.data.model;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,6 +22,7 @@ public class Feedback implements Serializable {
     private String comment;
     private int rating;
     private Date creationDate;
+    private String logReference;
 
     @Tolerate
     public Feedback() {
